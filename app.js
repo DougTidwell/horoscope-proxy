@@ -1,12 +1,14 @@
 // app.js - Ominous horoscope service
+// noinspection JSUnresolvedReference
+
 let express = require('express');
 let app = express();
 let port = process.env.PORT || 3000;
 
-let kafkaesqueHost = process.env.KAFKAESQUE_HOST || "localhost:3020";
-let ominousHost = process.env.OMINOUS_HOST || "localhost:3021";
-let optimisticHost = process.env.OPTIMISTIC_HOST || "localhost:3022";
-let planetaryMotionHost = process.env.PLANETARY_MOTION_HOST || "localhost:3022";
+let kafkaesqueHost = process.env.KAFKAESQUE_HOST || "http://localhost:3020";
+let ominousHost = process.env.OMINOUS_HOST || "http://localhost:3021";
+let optimisticHost = process.env.OPTIMISTIC_HOST || "http://localhost:3022";
+let planetaryMotionHost = process.env.PLANETARY_MOTION_HOST || "http://localhost:3022";
 let targetHost = kafkaesqueHost;
 
 let restler = require('restler');
@@ -31,7 +33,7 @@ let getHoroscope = function(req, res){
       break;
   }
 
-  restler.get("http://" + targetHost + "/horoscope/" + caseNeutralSign)
+  restler.get(targetHost + "/horoscope/" + caseNeutralSign)
       .on('complete', function (result){
         res.set({'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Headers':
